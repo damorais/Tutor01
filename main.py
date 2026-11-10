@@ -15,43 +15,42 @@ from app.routes import auth, admin, teacher, student
 # Declarar a versão semântica atual
 __version__ = "1.0.0"
 
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     Base.metadata.create_all(bind=engine)
-#     db = SessionLocal()
-#     if db.query(User).count() == 0:
-#         admin_user = User(name="Administrador", email="admin@tutor.com", password="admin123", role="admin", is_active=True)
-#         teacher_user = User(name="Professor Carlos", email="docente@tutor.com", password="docente123", role="docente", is_active=True)
-#         student_user = User(name="Aluno Lucas", email="aluno@tutor.com", password="aluno123", role="estudante", is_active=True)
-#         db.add_all([admin_user, teacher_user, student_user])
-#         db.commit()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
+    if db.query(User).count() == 0:
+        admin_user = User(name="Administrador", email="admin@tutor.com", password="admin123", role="admin", is_active=True)
+        teacher_user = User(name="Professor Carlos", email="docente@tutor.com", password="docente123", role="docente", is_active=True)
+        student_user = User(name="Aluno Lucas", email="aluno@tutor.com", password="aluno123", role="estudante", is_active=True)
+        db.add_all([admin_user, teacher_user, student_user])
+        db.commit()
 
-#         initial_activity = Activity(
-#             title="Estruturas Repetitivas (While / For)",
-#             subject="Programação I",
-#             description="Crie um programa em Python que leia números inteiros até que o utilizador digite 0, e exiba a soma acumulada.",
-#             max_help_level=6,
-#             docente_id=teacher_user.id
-#         )
-#         db.add(initial_activity)
-#         db.commit()
+        initial_activity = Activity(
+            title="Estruturas Repetitivas (While / For)",
+            subject="Programação I",
+            description="Crie um programa em Python que leia números inteiros até que o utilizador digite 0, e exiba a soma acumulada.",
+            max_help_level=6,
+            docente_id=teacher_user.id
+        )
+        db.add(initial_activity)
+        db.commit()
 
-#     db.close()
-#     yield
+    db.close()
+    yield
 
 app = FastAPI(
     title="Tutor Socrático IA",
-    version=__version__
-    # ,  # Atualiza a versão na documentação /docs
-    # lifespan=lifespan
+    version=__version__, #Atualiza a versão na documentação /docs
+    lifespan=lifespan
 )
 
-# app.add_middleware(SessionMiddleware, secret_key="chave_secreta_socratic_tutor_2026")
+app.add_middleware(SessionMiddleware, secret_key="chave_secreta_socratic_tutor_2026")
 
-# app.include_router(auth.router)
-# app.include_router(admin.router)
-# app.include_router(teacher.router)
-# app.include_router(student.router)
+app.include_router(auth.router)
+app.include_router(admin.router)
+app.include_router(teacher.router)
+app.include_router(student.router)
 
 @app.get("/")
 async def root():
