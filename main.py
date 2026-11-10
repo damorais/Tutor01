@@ -41,8 +41,9 @@ __version__ = "1.0.0"
 
 app = FastAPI(
     title="Tutor Socrático IA",
-    version=__version__,  # Atualiza a versão na documentação /docs
-    lifespan=lifespan
+    version=__version__
+    # ,  # Atualiza a versão na documentação /docs
+    # lifespan=lifespan
 )
 
 # app.add_middleware(SessionMiddleware, secret_key="chave_secreta_socratic_tutor_2026")
