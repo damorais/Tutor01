@@ -52,7 +52,7 @@ app.include_router(admin.router)
 app.include_router(teacher.router)
 app.include_router(student.router)
 
-@app.get("/")
+@app.get("/batata")
 async def root():
     return {"message": "Hello World"}
 
